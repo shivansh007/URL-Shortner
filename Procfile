@@ -1,1 +1,1 @@
-web: gunicorn hackerearth/hackerearth/wsgi.py
+web: gunicorn  hackerearth:application -b 0.0.0.0:5000
