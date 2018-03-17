@@ -1,1 +1,1 @@
-web: gunicorn hackerearth/hackerearth.wsgi
+web: gunicorn hackerearth/hackerearth/wsgi.py
