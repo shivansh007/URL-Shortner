@@ -1,1 +1,1 @@
-web: gunicorn  hackerearth:application -b 0.0.0.0:5000
+web: gunicorn hackerearth/hackerearth:application -b 0.0.0.0:5000
