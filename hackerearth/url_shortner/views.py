@@ -36,9 +36,8 @@ def short_url(request):
 				})
 		except IntegrityError:
 			return JsonResponse({
-				"short_url": short_url,
-				"status": "OK",
-				"status_codes": []
+				"status": "FAILED",
+				"status_codes": ["INVALID_URLS"]
 				})
 
 
@@ -146,7 +145,6 @@ def open_short_url(request, hash_value):
 def count(request):
 	try:
 		short_url = json.loads(request.body)['short_url']
-		print(short_url)
 		url = Url.objects.get(short_url = short_url)
 		return JsonResponse({
 			"count": url.count,
