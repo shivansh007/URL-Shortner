@@ -13,14 +13,14 @@ def short_url(request):
 			long_url = json.loads(request.body)['long_url']
 		except KeyError as e:
 			return JsonResponse({
-				"status": "FAILED",
-				"status_codes": ["BAD_DATA"]
+					"status": "FAILED",
+					"status_codes": ["BAD_DATA"]
 				})
 		scheme, netlock, path = urlparse(long_url)[:3]
 		if scheme == '' or netlock == '':
 			return JsonResponse({
-				"status": "FAILED",
-				"status_codes": ["INVALID_URLS"]
+					"status": "FAILED",
+					"status_codes": ["INVALID_URLS"]
 				})
 		hash_value = hashlib.md5(path.encode()).hexdigest()[:8]
 		short_url = settings.ENDPOINT + hash_value + '/'
@@ -30,14 +30,14 @@ def short_url(request):
 		try:	
 			url.save()
 			return JsonResponse({
-				"short_url": short_url,
-				"status": "OK",
-				"status_codes": []
+					"short_url": short_url,
+					"status": "OK",
+					"status_codes": []
 				})
 		except IntegrityError:
 			return JsonResponse({
-				"status": "FAILED",
-				"status_codes": ["INVALID_URLS"]
+					"status": "FAILED",
+					"status_codes": ["INVALID_URLS"]
 				})
 
 
@@ -47,20 +47,20 @@ def long_url(request):
 			short_url = json.loads(request.body)['short_url']
 		except KeyError as e:
 			return JsonResponse({
-				"status": "FAILED",
-				"status_codes": ["BAD_DATA"]
+					"status": "FAILED",
+					"status_codes": ["BAD_DATA"]
 				})
 		try:
 			url = Url.objects.get(short_url = short_url)
 			return JsonResponse({
-				"long_url": url.long_url,
-				"status": "OK",
-				"status_codes": []
+					"long_url": url.long_url,
+					"status": "OK",
+					"status_codes": []
 				})
 		except Url.DoesNotExist as e:
 			return JsonResponse({
-				"status": "FAILED",
-				"status_codes": ["SHORT_URLS_NOT_FOUND"]
+					"status": "FAILED",
+					"status_codes": ["SHORT_URLS_NOT_FOUND"]
 				})	
 
 def short_urls(request):
@@ -69,8 +69,8 @@ def short_urls(request):
 			long_urls = json.loads(request.body)['long_urls']
 		except KeyError as e:
 			return JsonResponse({
-				"status": "FAILED",
-				"status_codes": ["BAD_DATA"]
+					"status": "FAILED",
+					"status_codes": ["BAD_DATA"]
 				})
 		short_urls = dict()
 		invalid_urls = []
@@ -91,16 +91,16 @@ def short_urls(request):
 			short_urls[long_url] = short_url
 		if len(invalid_urls) == 0:
 			return JsonResponse({
-				"short_urls": short_urls,
-				"invalid_urls": invalid_urls,
-				"status": "OK",
-				"status_codes": []
+					"short_urls": short_urls,
+					"invalid_urls": invalid_urls,
+					"status": "OK",
+					"status_codes": []
 				})
 		else:
 			return JsonResponse({
-				"invalid_urls": invalid_urls,
-				"status": "FAILED",
-				"status_codes": ["INVALID_URLS"]
+					"invalid_urls": invalid_urls,
+					"status": "FAILED",
+					"status_codes": ["INVALID_URLS"]
 				})
 
 
@@ -110,8 +110,8 @@ def long_urls(request):
 			short_urls = json.loads(request.body)['short_urls']
 		except KeyError:
 			return JsonResponse({
-					"status": "FAILED",
-					"status_codes": ["BAD_DATA"]
+						"status": "FAILED",
+						"status_codes": ["BAD_DATA"]
 					})
 		long_urls = dict()
 		for short_url in short_urls:
@@ -120,13 +120,13 @@ def long_urls(request):
 				long_urls[short_url] = url.long_url
 			except Url.DoesNotExist:
 				return JsonResponse({
-					"status": "FAILED",
-					"status_codes": ["SHORT_URLS_NOT_FOUND"]
+						"status": "FAILED",
+						"status_codes": ["SHORT_URLS_NOT_FOUND"]
 					})
 		return JsonResponse({
-			"long_urls": long_urls,
-			"status": "OK",
-			"status_codes": []
+				"long_urls": long_urls,
+				"status": "OK",
+				"status_codes": []
 			})
 
 def open_short_url(request, hash_value):
@@ -138,8 +138,8 @@ def open_short_url(request, hash_value):
 		return redirect(url.long_url)
 	except Url.DoesNotExist as e:
 		return JsonResponse({
-			"status": "FAILED",
-			"status_codes": ["SHORT_URLS_NOT_FOUND"]
+				"status": "FAILED",
+				"status_codes": ["SHORT_URLS_NOT_FOUND"]
 			})	
 
 def count(request):
@@ -147,14 +147,14 @@ def count(request):
 		short_url = json.loads(request.body)['short_url']
 		url = Url.objects.get(short_url = short_url)
 		return JsonResponse({
-			"count": url.count,
-			"status": "OK",
-			"status_codes": []
+				"count": url.count,
+				"status": "OK",
+				"status_codes": []
 			})
 	except Url.DoesNotExist as e:
 		return JsonResponse({
-			"status": "FAILED",
-			"status_codes": ["SHORT_URLS_NOT_FOUND"]
+				"status": "FAILED",
+				"status_codes": ["SHORT_URLS_NOT_FOUND"]
 			})
 
 def clean_urls(request):
